@@ -19,8 +19,8 @@ it("+1 -1 reaches 0 twice", async () => {
   assert.equal(result, 0);
 });
 
-it("+3, +3, +4, -2, -4 reaches 10 twice", async () => {
-  const stream = mockFileStream("+3\n", "+3\n", "+4\n", "+2\n", "-4\n");
+it("+1, -2, +3, +1, reaches 2 twice", async () => {
+  const stream = mockFileStream("+1\n", "-2\n", "+3\n", "+1\n");
   const result = await findDuplicate(stream);
-  assert.equal(result, 10);
+  assert.equal(result, 2);
 });
