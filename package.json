@@ -2,6 +2,15 @@
   "name": "advent-of-code-2018",
   "version": "0.0.0",
   "description": "Advent of Code 2018 Exercises",
+  "scripts": {
+    "test": "mocha --watch 'src/**/*.test.js'"
+  },
+  "engines": {
+    "node": ">10"
+  },
   "author": "Matt Morgis",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
 }
