@@ -5,7 +5,7 @@ const clone = stream => {
   return stream.pipe(new PassThrough());
 };
 
-const findDuplicates = async stream => {
+const calibrate = async stream => {
   let frequency = 0;
   const frequenciesFound = new Set([0]);
   let iter = 0;
@@ -31,4 +31,4 @@ const findDuplicates = async stream => {
   }
 };
 
-module.exports = findDuplicates;
+module.exports = calibrate;
