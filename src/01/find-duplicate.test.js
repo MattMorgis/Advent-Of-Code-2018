@@ -1,17 +1,14 @@
 const assert = require("assert");
-
+const Readable = require("stream").Readable;
 const findDuplicate = require("./find-duplicate");
 
 const mockFileStream = (...numbers) => {
-  const mockStream = {
-    [Symbol.asyncIterator]: () => {
-      return {
-        next: () => ({
-          done: numbers.length === 0,
-          value: numbers.shift()
-        })
-      };
+  const mockStream = new Readable();
+  mockStream._read = () => {
+    for (const number of numbers) {
+      mockStream.push(number);
     }
+    mockStream.push(null);
   };
   return mockStream;
 };
