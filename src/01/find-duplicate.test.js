@@ -13,7 +13,7 @@ const mockFileStream = (...numbers) => {
   return mockStream;
 };
 
-it("+1 -2 reaches 0 twice", async () => {
+it("+1 -1 reaches 0 twice", async () => {
   const stream = mockFileStream("+1\n", "-1\n");
   const result = await findDuplicate(stream);
   assert.equal(result, 0);
