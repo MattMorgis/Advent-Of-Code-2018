@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const sum = require("./sum-stream");
+const sum = require("./sum");
 
 const main = async () => {
   try {
