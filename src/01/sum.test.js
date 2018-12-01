@@ -1,6 +1,6 @@
 const assert = require("assert");
 
-const sum = require("./sum-stream");
+const sum = require("./sum");
 
 const mockFileStream = (...numbers) => {
   const mockStream = {
@@ -16,7 +16,7 @@ const mockFileStream = (...numbers) => {
   return mockStream;
 };
 
-it.only("adds +1 +2 to equal 3", async () => {
+it("adds +1 +2 to equal 3", async () => {
   const stream = mockFileStream("+1\n", "+2\n");
   const result = await sum(stream);
   assert.equal(result, 3);
