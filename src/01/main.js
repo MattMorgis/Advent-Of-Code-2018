@@ -12,8 +12,8 @@ const fileStream = () => {
 
 const main = async () => {
   try {
-    console.log({sum: await sum(fileStream())});
-    console.log({duplicate: await findDuplicate(fileStream())});
+    console.log({frequencySum: await sum(fileStream())});
+    console.log({firstDuplicateFrequency: await findDuplicate(fileStream())});
   } catch (e) {
     console.log(e.message);
     process.exit(-1);
