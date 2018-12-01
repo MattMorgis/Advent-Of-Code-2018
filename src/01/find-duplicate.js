@@ -7,7 +7,7 @@ const clone = stream => {
 
 const findDuplicates = async stream => {
   let frequency = 0;
-  const frequenciesFound = [0];
+  const frequenciesFound = new Set([0]);
   let iter = 0;
 
   while (true) {
@@ -21,11 +21,11 @@ const findDuplicates = async stream => {
 
       frequency += number;
 
-      if (frequenciesFound.includes(frequency)) {
+      if (frequenciesFound.has(frequency)) {
         return frequency;
       }
 
-      frequenciesFound.push(frequency);
+      frequenciesFound.add(frequency);
     }
     stream = frozenStream;
   }
