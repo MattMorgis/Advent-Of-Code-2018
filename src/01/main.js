@@ -3,7 +3,7 @@ const fs = require("fs");
 const sum = require("./sum");
 const calibrate = require("./calibrate");
 
-const fileStream = () => {
+const frequencyStream = () => {
   return fs.createReadStream(__dirname + "/input.txt", {
     encoding: "utf-8",
     highWaterMark: 256
@@ -12,8 +12,10 @@ const fileStream = () => {
 
 const main = async () => {
   try {
-    console.log({frequencySum: await sum(fileStream())});
-    console.log({frequencyCalibration: await calibrate(fileStream())});
+    const frequencySum = await sum(frequencyStream());
+    console.log({frequencySum});
+    const frequencyCalibration = await calibrate(frequencyStream());
+    console.log({frequencyCalibration});
   } catch (e) {
     console.log(e.message);
     process.exit(-1);

@@ -1,6 +1,6 @@
 // Generator
 // "+1\n+2\n" yields -> 1 -> 2
-async function* chunksToNumbers(stream) {
+async function* streamToFrequencies(stream) {
   let previous = "";
   for await (const chunk of stream) {
     previous += chunk;
@@ -17,4 +17,4 @@ async function* chunksToNumbers(stream) {
   }
 }
 
-module.exports = chunksToNumbers;
+module.exports = streamToFrequencies;

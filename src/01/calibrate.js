@@ -1,4 +1,4 @@
-const streamToNumbers = require("./stream-to-lines");
+const streamToFrequencies = require("./stream-to-frequencies");
 const PassThrough = require("stream").PassThrough;
 
 const clone = stream => {
@@ -6,7 +6,7 @@ const clone = stream => {
 };
 
 const calibrate = async stream => {
-  let frequency = 0;
+  let currentFrequency = 0;
   const frequenciesFound = new Set([0]);
   let iter = 0;
 
@@ -16,16 +16,16 @@ const calibrate = async stream => {
     let frozenStream = clone(stream);
     iter += 1;
 
-    for await (const number of streamToNumbers(stream)) {
+    for await (const frequency of streamToFrequencies(stream)) {
       process.stdout.write(`reading file ${iter} times\r`);
 
-      frequency += number;
+      currentFrequency += frequency;
 
-      if (frequenciesFound.has(frequency)) {
-        return frequency;
+      if (frequenciesFound.has(currentFrequency)) {
+        return currentFrequency;
       }
 
-      frequenciesFound.add(frequency);
+      frequenciesFound.add(currentFrequency);
     }
     stream = frozenStream;
   }

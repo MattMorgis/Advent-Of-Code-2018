@@ -1,4 +1,4 @@
-const streamToNumbers = require("./stream-to-lines");
+const streamToFrequencies = require("./stream-to-frequencies");
 const addNumbers = async numbers => {
   let sum = 0;
   for await (const number of numbers) {
@@ -8,7 +8,7 @@ const addNumbers = async numbers => {
 };
 
 const sum = stream => {
-  return addNumbers(streamToNumbers(stream));
+  return addNumbers(streamToFrequencies(stream));
 };
 
 module.exports = sum;
