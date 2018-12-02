@@ -1,16 +1,18 @@
 const streamToProductId = require("./stream-to-ids");
 
-const generatePairs = array => {
-  return array.reduce(
-    (acc, _, i1) => [
-      ...acc,
-      ...new Array(array.length - 1 - i1)
-        .fill(0)
-        .map((_, i2) => [array[i1], array[i1 + 1 + i2]])
-    ],
-    []
-  );
-};
+async function* generatePairs(batches) {
+  for await (const batch of batches) {
+    yield batch.reduce(
+      (acc, _, i1) => [
+        ...acc,
+        ...new Array(batch.length - 1 - i1)
+          .fill(0)
+          .map((_, i2) => [batch[i1], batch[i1 + 1 + i2]])
+      ],
+      []
+    );
+  }
+}
 
 const hammingDistance = (stringOne, stringTwo) => {
   let distance = 0;
@@ -25,30 +27,37 @@ const hammingDistance = (stringOne, stringTwo) => {
   return [distance, commonLetters];
 };
 
-const findLowestPairAndRemoveDifferences = pairs => {
+const findLowestPairAndRemoveDifferences = async batches => {
   let lowestDistance = Infinity;
   let lowestPair;
-  pairs.forEach(pair => {
-    const [distance, commonLetters] = hammingDistance(...pair);
-    if (distance < lowestDistance) {
-      lowestDistance = distance;
-      lowestPair = commonLetters;
-    }
-  });
+  for await (const pairs of batches) {
+    pairs.forEach(pair => {
+      const [distance, commonLetters] = hammingDistance(...pair);
+      if (distance < lowestDistance) {
+        lowestDistance = distance;
+        lowestPair = commonLetters;
+      }
+    });
+  }
+
   return lowestPair;
 };
 
-const productIds = async stream => {
-  const ids = [];
+async function* getBatches(stream) {
+  let batch = [];
   for await (const productId of streamToProductId(stream)) {
-    ids.push(productId);
+    batch.push(productId);
+    if (batch.length === 5) {
+      yield batch;
+      batch = [];
+    }
   }
-  return ids;
-};
+  yield batch;
+}
 
 const findCommon = async stream => {
-  return findLowestPairAndRemoveDifferences(
-    generatePairs(await productIds(stream))
+  return await findLowestPairAndRemoveDifferences(
+    generatePairs(getBatches(stream))
   );
 };
 
