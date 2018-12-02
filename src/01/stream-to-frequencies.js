@@ -6,7 +6,7 @@ async function* streamToFrequencies(stream) {
     previous += chunk;
     let eolIndex;
     while ((eolIndex = previous.indexOf("\n")) >= 0) {
-      // line includes the EOL
+      // line excludes the EOL
       const number = previous.slice(0, eolIndex);
       yield parseInt(number);
       previous = previous.slice(eolIndex + 1);
