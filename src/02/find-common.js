@@ -14,22 +14,28 @@ const generatePairs = array => {
 
 const hammingDistance = (stringOne, stringTwo) => {
   let distance = 0;
+  let commonLetters = "";
   for (let i = 0; i < stringOne.length; i += 1) {
     if (stringOne[i] !== stringTwo[i]) {
       distance += 1;
-    }
-  }
-  return distance;
-};
-
-const removeDifferentLetters = (stringOne, stringTwo) => {
-  let commonLetters = "";
-  for (let i = 0; i < stringOne.length; i += 1) {
-    if (stringOne[i] === stringTwo[i]) {
+    } else {
       commonLetters = commonLetters.concat(stringOne[i]);
     }
   }
-  return commonLetters;
+  return [distance, commonLetters];
+};
+
+const findLowestPairAndRemoveDifferences = pairs => {
+  let lowestDistance = Infinity;
+  let lowestPair;
+  pairs.forEach(pair => {
+    const [distance, commonLetters] = hammingDistance(...pair);
+    if (distance < lowestDistance) {
+      lowestDistance = distance;
+      lowestPair = commonLetters;
+    }
+  });
+  return lowestPair;
 };
 
 const findCommon = async stream => {
@@ -37,18 +43,8 @@ const findCommon = async stream => {
   for await (const productId of streamToProductId(stream)) {
     productIds.push(productId);
   }
-  let lowestDistance = Infinity;
-  let lowestPair;
   const pairs = generatePairs(productIds);
-  pairs.forEach(pair => {
-    const distance = hammingDistance(...pair);
-    if (distance < lowestDistance) {
-      lowestDistance = distance;
-      lowestPair = pair;
-    }
-  });
-  const commonLetters = removeDifferentLetters(...lowestPair);
-  return commonLetters;
+  return findLowestPairAndRemoveDifferences(pairs);
 };
 
 module.exports = findCommon;
