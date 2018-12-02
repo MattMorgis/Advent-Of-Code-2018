@@ -1,14 +1,14 @@
 const streamToFrequencies = require("./stream-to-frequencies");
-const addNumbers = async numbers => {
+const addFrequencies = async frequencies => {
   let sum = 0;
-  for await (const number of numbers) {
-    sum += number;
+  for await (const frequency of frequencies) {
+    sum += frequency;
   }
   return sum;
 };
 
 const sum = stream => {
-  return addNumbers(streamToFrequencies(stream));
+  return addFrequencies(streamToFrequencies(stream));
 };
 
 module.exports = sum;
