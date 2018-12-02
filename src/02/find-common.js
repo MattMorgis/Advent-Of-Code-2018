@@ -1,18 +1,16 @@
 const streamToProductId = require("./stream-to-ids");
 
-async function* generatePairs(batches) {
-  for await (const batch of batches) {
-    yield batch.reduce(
-      (acc, _, i1) => [
-        ...acc,
-        ...new Array(batch.length - 1 - i1)
-          .fill(0)
-          .map((_, i2) => [batch[i1], batch[i1 + 1 + i2]])
-      ],
-      []
-    );
-  }
-}
+const generatePairs = array => {
+  return array.reduce(
+    (acc, _, i1) => [
+      ...acc,
+      ...new Array(array.length - 1 - i1)
+        .fill(0)
+        .map((_, i2) => [array[i1], array[i1 + 1 + i2]])
+    ],
+    []
+  );
+};
 
 const hammingDistance = (stringOne, stringTwo) => {
   let distance = 0;
@@ -27,37 +25,30 @@ const hammingDistance = (stringOne, stringTwo) => {
   return [distance, commonLetters];
 };
 
-const findLowestPairAndRemoveDifferences = async batches => {
+const findLowestPairAndRemoveDifferences = pairs => {
   let lowestDistance = Infinity;
   let lowestPair;
-  for await (const pairs of batches) {
-    pairs.forEach(pair => {
-      const [distance, commonLetters] = hammingDistance(...pair);
-      if (distance < lowestDistance) {
-        lowestDistance = distance;
-        lowestPair = commonLetters;
-      }
-    });
-  }
-
+  pairs.forEach(pair => {
+    const [distance, commonLetters] = hammingDistance(...pair);
+    if (distance < lowestDistance) {
+      lowestDistance = distance;
+      lowestPair = commonLetters;
+    }
+  });
   return lowestPair;
 };
 
-async function* getBatches(stream) {
-  let batch = [];
+const productIds = async stream => {
+  const ids = [];
   for await (const productId of streamToProductId(stream)) {
-    batch.push(productId);
-    if (batch.length === 5) {
-      yield batch;
-      batch = [];
-    }
+    ids.push(productId);
   }
-  yield batch;
-}
+  return ids;
+};
 
 const findCommon = async stream => {
-  return await findLowestPairAndRemoveDifferences(
-    generatePairs(getBatches(stream))
+  return findLowestPairAndRemoveDifferences(
+    generatePairs(await productIds(stream))
   );
 };
 
