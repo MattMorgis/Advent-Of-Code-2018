@@ -6,7 +6,7 @@ const generatePairs = array => {
       ...acc,
       ...new Array(array.length - 1 - i1)
         .fill(0)
-        .map((v, i2) => [array[i1], array[i1 + 1 + i2]])
+        .map((_, i2) => [array[i1], array[i1 + 1 + i2]])
     ],
     []
   );
