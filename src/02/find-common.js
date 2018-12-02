@@ -15,7 +15,7 @@ const generatePairs = array => {
 const hammingDistance = (stringOne, stringTwo) => {
   let distance = 0;
   let commonLetters = "";
-  for (let i = 0; i < stringOne.length; i += 1) {
+  for (let i = 0; i < stringOne.length; i++) {
     if (stringOne[i] !== stringTwo[i]) {
       distance += 1;
     } else {
