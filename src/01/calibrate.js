@@ -8,20 +8,23 @@ const clone = stream => {
 const calibrate = async stream => {
   let currentFrequency = 0;
   const frequenciesFound = new Set([0]);
-  let iter = 0;
 
   while (true) {
     // clone stream and put in cold storage
     // in case we need to re-read inputs.
     let frozenStream = clone(stream);
-    iter += 1;
 
+    let iter = 0;
     for await (const frequency of streamToFrequencies(stream)) {
-      process.stdout.write(`reading file ${iter} times\r`);
+      process.stdout.write(
+        iter % 2 === 0 ? "calibrating... ▮\r" : "calibrating... ▯\r"
+      );
+      iter += 1;
 
       currentFrequency += frequency;
 
       if (frequenciesFound.has(currentFrequency)) {
+        process.stdout.write("\n");
         return currentFrequency;
       }
 
