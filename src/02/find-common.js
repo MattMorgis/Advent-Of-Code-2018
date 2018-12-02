@@ -38,13 +38,18 @@ const findLowestPairAndRemoveDifferences = pairs => {
   return lowestPair;
 };
 
-const findCommon = async stream => {
-  const productIds = [];
+const productIds = async stream => {
+  const ids = [];
   for await (const productId of streamToProductId(stream)) {
-    productIds.push(productId);
+    ids.push(productId);
   }
-  const pairs = generatePairs(productIds);
-  return findLowestPairAndRemoveDifferences(pairs);
+  return ids;
+};
+
+const findCommon = async stream => {
+  return findLowestPairAndRemoveDifferences(
+    generatePairs(await productIds(stream))
+  );
 };
 
 module.exports = findCommon;
