@@ -25,7 +25,7 @@ async function* streamToEvents(stream) {
     }
   }
   if (previous.length > 0) {
-    yield previous;
+    yield parseLine(previous);
   }
 }
 
