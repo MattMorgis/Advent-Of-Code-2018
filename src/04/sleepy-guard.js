@@ -59,7 +59,7 @@ const guardShifts = events => {
   return eventsByGuard;
 };
 
-const findSleepiestGuard = records => {
+const shiftsToGuards = records => {
   const uniqueIds = new Set();
   records.forEach(record => uniqueIds.add(record.guardId));
 
@@ -75,23 +75,38 @@ const findSleepiestGuard = records => {
     guards.push(guard);
   }
 
-  const sleepiestGuard = guards.reduce((a, b) =>
-    a.totalMinutesSlept > b.totalMinutesSlept ? a : b
-  );
-
-  return sleepiestGuard;
+  return guards;
 };
+
+const sleepiestGuard = guards =>
+  guards.reduce((a, b) => (a.totalMinutesSlept > b.totalMinutesSlept ? a : b));
 
 const sleepiestMinute = guard => {
   const minutes = guard.minutes.map(minute => minute.reduce((a, b) => a + b));
-  return minutes.indexOf(Math.max(...minutes));
+  return {
+    minute: minutes.indexOf(Math.max(...minutes)),
+    count: Math.max(...minutes)
+  };
 };
 
 const sleepyGuard = async eventStream => {
   const events = await sortedEvents(eventStream);
   const shifts = guardShifts(events);
-  const sleepiestGuard = findSleepiestGuard(shifts);
-  return sleepiestGuard.id * sleepiestMinute(sleepiestGuard);
+  const guards = shiftsToGuards(shifts);
+  const sleepiest = sleepiestGuard(guards);
+  return sleepiest.id * sleepiestMinute(sleepiest).minute;
 };
 
-module.exports = sleepyGuard;
+const sleepyMinute = async eventStream => {
+  const events = await sortedEvents(eventStream);
+  const shifts = guardShifts(events);
+  const guards = shiftsToGuards(shifts).map(guard => {
+    return {...guard, sleepiestMinute: sleepiestMinute(guard)};
+  });
+  const sleepiest = guards.reduce((a, b) =>
+    a.sleepiestMinute.count > b.sleepiestMinute.count ? a : b
+  );
+  return sleepiest.id * sleepiest.sleepiestMinute.minute;
+};
+
+module.exports = {sleepyGuard, sleepyMinute};
