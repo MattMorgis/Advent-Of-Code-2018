@@ -12,3 +12,9 @@ it("abBA reacts and returns 0", () => {
   const result = removePolarity(polymer);
   assert.equal(result, 0);
 });
+
+it("abAB doesn't react and returns 4", () => {
+  const polymer = "abAB";
+  const result = removePolarity(polymer);
+  assert.equal(result, 4);
+});
