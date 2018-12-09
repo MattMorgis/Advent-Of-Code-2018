@@ -1,8 +1,8 @@
 const assert = require("assert");
 const removePolarity = require("./remove-polarity");
 
-it("aA react and return empty string", () => {
+it("aA reacts and returns 0", () => {
   const polymer = "aA";
   const result = removePolarity(polymer);
-  assert.equal(result, "");
+  assert.equal(result, 0);
 });

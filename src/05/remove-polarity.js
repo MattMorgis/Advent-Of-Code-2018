@@ -1,5 +1,5 @@
 const removePolarity = polymer => {
-  return "";
+  return 0;
 };
 
 module.exports = removePolarity;
