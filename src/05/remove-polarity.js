@@ -3,6 +3,10 @@ const isLowerCase = letter => letter === letter.toLowerCase();
 const lettersAreEqual = (a, b) => a.toUpperCase() === b.toUpperCase();
 const last = array => array[array.length - 1];
 
+const unique = array => [
+  ...new Map(array.map(s => [s.toLowerCase(), s])).values()
+];
+
 const doesReact = (a, b) => {
   let reacts = false;
   if (
@@ -20,11 +24,11 @@ const removePolarity = polymer => {
   polymer = [...polymer];
   const output = [""];
 
-  for (const letter of polymer) {
-    if (doesReact(letter, last(output))) {
+  for (const char of polymer) {
+    if (doesReact(char, last(output))) {
       output.pop();
     } else {
-      output.push(letter);
+      output.push(char);
     }
   }
 
@@ -32,4 +36,15 @@ const removePolarity = polymer => {
   return output.length - 1;
 };
 
-module.exports = removePolarity;
+const bestPolarity = polymer => {
+  polymer = [...polymer];
+  const uniqueLetters = unique(polymer);
+  const results = uniqueLetters.map(letter => {
+    const strippedPolymer = polymer.filter(c => !lettersAreEqual(c, letter));
+    return removePolarity(strippedPolymer);
+  });
+
+  return Math.min.apply(null, results);
+};
+
+module.exports = {removePolarity, bestPolarity};
