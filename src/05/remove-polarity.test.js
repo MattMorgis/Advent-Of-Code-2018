@@ -1,5 +1,5 @@
 const assert = require("assert");
-const removePolarity = require("./remove-polarity");
+const {removePolarity, bestPolarity} = require("./remove-polarity");
 
 it("aA reacts and returns 0", () => {
   const polymer = "aA";
@@ -35,4 +35,12 @@ it("dabAcCaCBAcCcaDA returns 10", () => {
   const polymer = "dabAcCaCBAcCcaDA";
   const result = removePolarity(polymer);
   assert.equal(result, 10);
+});
+
+// Part 2
+
+it("dabAcCaCBAcCcaDA returns 4", () => {
+  const polymer = "dabAcCaCBAcCcaDA";
+  const result = bestPolarity(polymer);
+  assert.equal(result, 4);
 });
