@@ -1,3 +1,7 @@
+const manhattanDistance = ([x1, y1], [x2, y2]) => {
+  return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+};
+
 const calcuateGridSize = coordinates => {
   // add some padding to the grid
   // to simulate and cut off "infinite space"
@@ -33,4 +37,18 @@ const plotCoordinates = (grid, coordinates) => {
   return grid;
 };
 
-module.exports = {calcuateGridSize, generateGrid, plotCoordinates};
+const calculateMinimumDistances = ([x1, y1], coordinates) => {
+  const distances = [];
+  for (const [x2, y2] of coordinates) {
+    const distance = manhattanDistance([x1, y1], [x2, y2]);
+    distances.push(distance);
+  }
+  return distances;
+};
+
+module.exports = {
+  calcuateGridSize,
+  generateGrid,
+  plotCoordinates,
+  calculateMinimumDistances
+};

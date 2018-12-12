@@ -1,23 +1,15 @@
 const getCoordinates = require("./stream-to-coordinates");
-const {calcuateGridSize, generateGrid, plotCoordinates} = require("./grid");
-
-const manhattanDistance = ([x1, y1], [x2, y2]) => {
-  return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-};
+const {
+  calcuateGridSize,
+  generateGrid,
+  plotCoordinates,
+  calculateMinimumDistances
+} = require("./grid");
 
 var count = (searchValue, array) =>
   array.reduce((n, val) => {
     return n + (val === searchValue);
   }, 0);
-
-const calculateMinimumDistances = ([x1, y1], coordinates) => {
-  const distances = [];
-  for (const [x2, y2] of coordinates) {
-    const distance = manhattanDistance([x1, y1], [x2, y2]);
-    distances.push(distance);
-  }
-  return distances;
-};
 
 const calculateDistancesBetweenCoordinates = (grid, coordinates) => {
   // for every cell
