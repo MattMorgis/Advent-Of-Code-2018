@@ -78,7 +78,6 @@ const calculateDistancesBetweenCoordinates = (grid, coordinates) => {
 };
 
 const coordinatesThatExtendInfinitely = grid => {
-  console.log(grid);
   const edgeValues = new Set();
   grid.forEach((row, x) => {
     row.forEach((column, y) => {
