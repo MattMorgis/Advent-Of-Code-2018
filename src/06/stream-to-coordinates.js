@@ -20,4 +20,13 @@ async function* streamToCoordinates(stream) {
   }
 }
 
-module.exports = streamToCoordinates;
+const getCoordinates = async inputStream => {
+  const coordinates = [];
+  const coordinateStream = streamToCoordinates(inputStream);
+  for await (const coordinate of coordinateStream) {
+    coordinates.push(coordinate);
+  }
+  return coordinates;
+};
+
+module.exports = getCoordinates;

@@ -1,4 +1,5 @@
-const streamToCoordinates = require("./stream-to-coordinates");
+const getCoordinates = require("./stream-to-coordinates");
+const {calcuateGridSize} = require("./grid");
 
 const manhattanDistance = ([x1, y1], [x2, y2]) => {
   return Math.abs(x1 - x2) + Math.abs(y1 - y2);
@@ -8,28 +9,6 @@ var count = (searchValue, array) =>
   array.reduce((n, val) => {
     return n + (val === searchValue);
   }, 0);
-const getCoordinates = async inputStream => {
-  const coordinates = [];
-  const coordinateStream = streamToCoordinates(inputStream);
-  for await (const coordinate of coordinateStream) {
-    coordinates.push(coordinate);
-  }
-  return coordinates;
-};
-
-const calcuateGridSize = coordinates => {
-  // add some padding to the grid
-  // to simulate and cut off "infinite space"
-  const padding = 5;
-  // grab largest coordinate to make grid a square
-  let largestCoordinate = 0;
-  for (const [x, y] of coordinates) {
-    if (x > largestCoordinate) largestCoordinate = x;
-    if (y > largestCoordinate) largestCoordinate = y;
-  }
-  const boundary = largestCoordinate + padding;
-  return [boundary, boundary];
-};
 
 const generateGrid = size => {
   const [xBoundary, yBoundary] = size;
