@@ -1,5 +1,6 @@
 const fs = require("fs").promises;
 const largestArea = require("./area");
+const findRegion = require("./region");
 
 const main = async () => {
   try {
@@ -8,6 +9,8 @@ const main = async () => {
     });
     const part1 = await largestArea(input);
     console.log({part1});
+    const part2 = await findRegion(input);
+    console.log({part2});
   } catch (e) {
     console.log(e.message);
     process.exit(-1);
