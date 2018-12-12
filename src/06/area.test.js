@@ -16,7 +16,7 @@ const mockFileStream = (...inputs) => {
   return mockStream;
 };
 
-it("finite space should equal 17", async () => {
+it("largest area should equal 17", async () => {
   const stream = mockFileStream(
     "1, 1\n",
     "1, 6\n",

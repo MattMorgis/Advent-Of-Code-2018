@@ -20,11 +20,11 @@ const calcuateGridSize = coordinates => {
   return [largestX + padding, largestY + padding];
 };
 
-const area = async inputStream => {
+const largestArea = async inputStream => {
   const coordinates = await getCoordinates(inputStream);
   const [maxX, maxY] = calcuateGridSize(coordinates);
 
   return null;
 };
 
-module.exports = area;
+module.exports = largestArea;
