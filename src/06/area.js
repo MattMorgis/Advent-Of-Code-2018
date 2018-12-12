@@ -1,5 +1,5 @@
 const getCoordinates = require("./stream-to-coordinates");
-const {calcuateGridSize} = require("./grid");
+const {calcuateGridSize, generateGrid, plotCoordinates} = require("./grid");
 
 const manhattanDistance = ([x1, y1], [x2, y2]) => {
   return Math.abs(x1 - x2) + Math.abs(y1 - y2);
@@ -9,27 +9,6 @@ var count = (searchValue, array) =>
   array.reduce((n, val) => {
     return n + (val === searchValue);
   }, 0);
-
-const generateGrid = size => {
-  const [xBoundary, yBoundary] = size;
-  const grid = [];
-
-  for (const i of Array(xBoundary).keys()) {
-    grid_columns = [];
-    for (const j of Array(yBoundary).keys()) {
-      grid_columns.push(-1);
-    }
-    grid.push(grid_columns);
-  }
-  return grid;
-};
-
-const plotCoordinates = (grid, coordinates) => {
-  for (const [i, [x, y]] of coordinates.entries()) {
-    grid[x][y] = i;
-  }
-  return grid;
-};
 
 const calculateMinimumDistances = ([x1, y1], coordinates) => {
   const distances = [];
@@ -92,10 +71,10 @@ const largestArea = async inputStream => {
   const finiteCoordinates = Object.keys(coordinates).filter(
     i => !badCoordinates.has(Number(i))
   );
-  const counts = finiteCoordinates.map(value => {
+  const finiteSpaceSizes = finiteCoordinates.map(value => {
     return countFiniteCoordinates(Number(value), grid);
   });
-  return Math.max(...counts);
+  return Math.max(...finiteSpaceSizes);
 };
 
 module.exports = largestArea;

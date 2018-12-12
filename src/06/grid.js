@@ -12,4 +12,25 @@ const calcuateGridSize = coordinates => {
   return [boundary, boundary];
 };
 
-module.exports = {calcuateGridSize};
+const generateGrid = size => {
+  const [xBoundary, yBoundary] = size;
+  const grid = [];
+
+  for (const i of Array(xBoundary).keys()) {
+    grid_columns = [];
+    for (const j of Array(yBoundary).keys()) {
+      grid_columns.push(-1);
+    }
+    grid.push(grid_columns);
+  }
+  return grid;
+};
+
+const plotCoordinates = (grid, coordinates) => {
+  for (const [i, [x, y]] of coordinates.entries()) {
+    grid[x][y] = i;
+  }
+  return grid;
+};
+
+module.exports = {calcuateGridSize, generateGrid, plotCoordinates};
